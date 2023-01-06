@@ -1,4 +1,4 @@
-const { ethers, network, getNamedAccounts } = require("hardhat")
+const { ethers, network } = require("hardhat")
 const { developmentChains } = require("../helper-hardhat-config")
 
 async function hack() {

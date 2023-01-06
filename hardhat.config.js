@@ -26,11 +26,12 @@ module.exports = {
     networks: {
         hardhat: {
             chainId: 31337,
-            // forking: { url: MAINNET_RPC_URL },
+            forking: { url: GOERLI_RPC_URL },
             // blockNumber: 1200000, // tests should be done with a fixed block to prevent using different blockchain states between each of them
         },
         localhost: {
             chainId: 31337,
+            url: "http://127.0.0.1:8545/",
         },
         goerli: {
             url: GOERLI_RPC_URL,
