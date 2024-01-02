@@ -15,6 +15,6 @@ contract ExploitLevel0 is Test {
     function testExploit() external {
         string memory password = level0.password();
         level0.authenticate(password);
-        assertEq(level0.getCleared(), true);
+        assertTrue(level0.getCleared());
     }
 }
