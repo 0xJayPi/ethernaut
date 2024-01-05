@@ -36,3 +36,11 @@ The objective is to trigger receive() without reverting. To this end, I need to 
 1. I call contribution() sending ```< 0.001 ether```
 2. Now, I call receive() sending ```> 0 wei```
 3. Finally, I call withdraw() to retrive all the balance now that I'm the ```owner```
+
+## 2.Fallout
+
+```Contract instance: 0x8216C602F2A89ec5C915C21C82Cb8E2359fBF033```
+
+### Steps
+In older versions of solidity, you would name the constructor with the same name as the contract. In this case, there's a typo in the function. Hence, it can be called by anyone at any time. Though, as silly as it sounds, this was a real attack when DynamicPyramid renamed their protocol to Rubixi
+1- I only need to call ```Fal1out()```x to claim ownerhsip of the contract
