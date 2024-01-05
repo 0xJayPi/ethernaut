@@ -10,9 +10,7 @@ import "forge-std/Test.sol";
 contract ExploitLevel2 is Test {
     Fallout instance = new Fallout();
 
-    function setUp() external {
-        // vm.createSelectFork("sepolia");
-    }
+    function setUp() external {}
 
     function testExploit() external {
         vm.broadcast();

