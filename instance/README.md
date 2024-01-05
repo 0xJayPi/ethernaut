@@ -22,6 +22,17 @@ await contract.method7123949()
 await contract.password()
 'ethernaut0'
 ```
+2. Then, I called authenticate() with the password.
 
-2. Then, I forked sepolia and tested the password using ```forge test -C test/Level0.exp.sol```
-3. Finally, after confirming the level got cleared in the fork, I used the password in sepolia to clear the level ```forge script script/Level0.script.sol --private-key [PRIVATE_KEY] --broadcast --rpc-url https://rpc.ankr.com/eth_sepolia```
+
+## 1.Fallback
+
+```Contract instance: 0x890CD86886Ff5eDB815aF03cb040D86A36fB5A75```
+
+### Steps
+The objective is to trigger receive() without reverting. To this end, I need to pass the require in the function. Meaning
+- sendindg at least 1 wei -> ```msg.value > 0```
+- having already contributed at least 1 wei -> ```contributions[msg.sender] > 0```
+1. I call contribution() sending ```< 0.001 ether```
+2. Now, I call receive() sending ```> 0 wei```
+3. Finally, I call withdraw() to retrive all the balance now that I'm the ```owner```
