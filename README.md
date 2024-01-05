@@ -15,6 +15,7 @@ Wallet Used: ```Sepolia: 0x9606e11178a83C364108e99fFFD2f7F75C99d801``` a.k.a. [0
 - [x] 0.Hello Ethernaut
 - [x] 1.Fallback
 - [x] 2.Fallout
+- [x] 3.CoinFlip
 
 ## Testing 
 - To test the code in a local fork: ```forge test -C test/Level#.test.sol```

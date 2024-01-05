@@ -44,3 +44,15 @@ The objective is to trigger receive() without reverting. To this end, I need to 
 ### Steps
 In older versions of solidity, you would name the constructor with the same name as the contract. In this case, there's a typo in the function. Hence, it can be called by anyone at any time. Though, as silly as it sounds, this was a real attack when DynamicPyramid renamed their protocol to Rubixi
 1- I only need to call ```Fal1out()```x to claim ownerhsip of the contract
+
+## 3.CoinFlip
+
+```Contract instance: 0xEF4e4992db2A141d4a15CB284aA32E616d7FE5C6```
+
+### Steps
+On chain randonmess is not possible as of today, because information on-chain is public and accessible to everyone. Thus, any given user can do the same math and call the ```flip()``` function to guess the side of the coin.
+1. I tested the solution locally to validate my assumptions.
+When it comes to exploiting the contract on-chain, this time the script needs to be properly modified from the test code used before
+2. In order to execute the math on-chain in an ATOMIC process, I needed to create a contract named ```Player```
+3. I wrote the code of the exploit in the constructor (I could have deployed a contract separately and do the exploid in a function)
+4. Now, I only have to call the script 10 times to resolve the challenge
