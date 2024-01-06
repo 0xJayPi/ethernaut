@@ -66,3 +66,12 @@ It's fundamental to understand the difference between `tx.origin` and `msg.sende
 1. I created an `Intermediary` contract in my test file to use it to call the instance.
 2. When the validation in `changeOwner()` is triggered, `msg.sender == address(Intermediary)` and `tx.origin == msg.sender`. Thus, I'm now able to send `msg.sender` as parameter and change the owner.
 3. I tested the solution locally to validate my assumptions. Then, coded a script to execute it on-chain
+
+## 5.Token
+
+`Contract instance: 0x21d06aC321053C031aefd719D08f86A3aaf7723d`
+### Steps
+Before Solidity 8.0.0, mathematical operations could overflow/underflow resulting in unexpected behaviours if not considered within the contract logic. It was the accepted approach to implement OpenZeppelin's SafeMath library to prevent it from happening. From Solidity 8.0.0 onwards, any overflow/underflow triggers a panic resulting in a revert
+1. I set the local environment to validate the underflow I want to trigger for `balances[]`. The objective is to set its value to what-would-be `-1`, which, as a consequence of the underflow, will actually be `type(uint256).max`
+2. After testing locally, I wrote the script to perform the transaction on-chain
+3. By sending 21 tokens (any value > 20 tokens transfered to the player) from the player address to any address, I triggered the underflow in `balances[player]`

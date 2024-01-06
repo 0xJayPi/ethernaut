@@ -17,6 +17,7 @@ Wallet Used: ```Sepolia: 0x9606e11178a83C364108e99fFFD2f7F75C99d801``` a.k.a. [0
 - [x] 2.Fallout
 - [x] 3.CoinFlip
 - [x] 4.Telephone
+- [x] 5.Token
 
 ## Testing 
 - To test the code locallly: ```forge test --mc ExploitLevel#```

@@ -1,4 +1,4 @@
 {
-    "solidity.compileUsingRemoteVersion": "",
+    "solidity.compileUsingRemoteVersion": "v0.6.0+commit.26b70077",
     "solidity.formatter": "forge"
 }
