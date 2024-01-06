@@ -151,3 +151,19 @@ Local environment: `forge test --mc ExploitLevel7`
 Sepolia: `forge script script/Level7.exp.sol:ExploitLevel7 --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
+
+## 8.Vault
+
+`Ethernaut Instance: 0x64f630b9B9035B21413fB85C0CAB5ADd53049587`
+
+### Steps
+It's import to remember that setting `private` to variables only prevent them from being read by other contracts. It does NOT mean that their private and can't be read by anybody. Likewise, no data on-chain is private, including storage and transactions data.
+1. My first objective is to read the password from the instance storage. I know it's located in slot 1 because of being a 32 bytes variable and storage layout rules of Solidity. To read storage of contracts I can use the `cast` commnand. `cast storage 0x64f630b9B9035B21413fB85C0CAB5ADd53049587 1 --rpc-url $SEPOLIA`
+2. Once I have the password to unlock the contract, I only need to call the `unlock()` function.
+
+### Running the code
+
+Local environment: `forge test --mc ExploitLevel8 --rpc-url $SEPOLIA`
+Sepolia: `forge script script/Level8.exp.sol --broadcast --rpc-url $SEPOLIA`
+
+---------------------------------
