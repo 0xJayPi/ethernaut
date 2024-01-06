@@ -70,8 +70,19 @@ It's fundamental to understand the difference between `tx.origin` and `msg.sende
 ## 5.Token
 
 `Contract instance: 0x21d06aC321053C031aefd719D08f86A3aaf7723d`
+
 ### Steps
 Before Solidity 8.0.0, mathematical operations could overflow/underflow resulting in unexpected behaviours if not considered within the contract logic. It was the accepted approach to implement OpenZeppelin's SafeMath library to prevent it from happening. From Solidity 8.0.0 onwards, any overflow/underflow triggers a panic resulting in a revert
 1. I set the local environment to validate the underflow I want to trigger for `balances[]`. The objective is to set its value to what-would-be `-1`, which, as a consequence of the underflow, will actually be `type(uint256).max`
 2. After testing locally, I wrote the script to perform the transaction on-chain
 3. By sending 21 tokens (any value > 20 tokens transfered to the player) from the player address to any address, I triggered the underflow in `balances[player]`
+
+## 6.Delegation
+
+`Contract instance: 0x298e1F2cf32a2635C24699821D48c42Ad2d53456`
+
+### Steps
+`delegatecall()` executes the logic of the callee contract in the context of the caller one. Thus, I need to do a `delegatecall()` from the `Delegation` (instance) contract to the `Delegate` (logic) contract so that the the `owner` var is updated to `msg.sender` in the context of the `Delegation`. It's key to remember that there's no association between the names of the variables of the contracts but the storage slot they occupy. In this case `owner` uses slot0 of both contracts.
+1. In my local test, I first encode the signature of the function `pwn()` to send then send it in the call.
+2. Once I proved the exploit works locally, I proceed to execute the exploit on-chain.
+
