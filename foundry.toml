@@ -7,4 +7,4 @@ remappings = [
     '@openzeppelin/=lib/openzeppelin-contracts/contracts/',
 ]
 rpc_endpoints = { sepolia = "https://rpc.ankr.com/eth_sepolia" }
-eth_rpc_url = "https://rpc.ankr.com/eth_sepolia"
+#eth_rpc_url = "https://rpc.ankr.com/eth_sepolia"

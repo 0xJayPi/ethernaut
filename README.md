@@ -16,8 +16,9 @@ Wallet Used: ```Sepolia: 0x9606e11178a83C364108e99fFFD2f7F75C99d801``` a.k.a. [0
 - [x] 1.Fallback
 - [x] 2.Fallout
 - [x] 3.CoinFlip
+- [x] 4.Telephone
 
 ## Testing 
-- To test the code locallly: ```forge test -C test/Level#.test.sol```
-- To run the code in sepolia: ```forge script script/Level#.exp.sol --broadcast```
+- To test the code locallly: ```forge test --mc ExploitLevel#```
+- To run the code in sepolia: ```forge script script/Level#.exp.sol:ExploitLevel# --broadcast --rpc-url $SEPOLIA```
 

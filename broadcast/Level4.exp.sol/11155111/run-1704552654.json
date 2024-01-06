@@ -1,0 +1,49 @@
+{
+  "transactions": [
+    {
+      "hash": "0x6929c55fd3f93dcfb2150a25a924f025db6231d379024e1d8453c8da13d86401",
+      "transactionType": "CALL",
+      "contractName": "script/Level4.exp.sol:Intermediary",
+      "contractAddress": "0xC7f2Cf4845C6db0e1a1e91ED41Bcd0FcC1b0E141",
+      "function": "ring()",
+      "arguments": [],
+      "transaction": {
+        "type": "0x02",
+        "from": "0x9606e11178a83c364108e99fffd2f7f75c99d801",
+        "to": "0xc7f2cf4845c6db0e1a1e91ed41bcd0fcc1b0e141",
+        "gas": "0x71a6",
+        "value": "0x0",
+        "data": "0x8360c185",
+        "nonce": "0x37",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    }
+  ],
+  "receipts": [
+    {
+      "transactionHash": "0x6929c55fd3f93dcfb2150a25a924f025db6231d379024e1d8453c8da13d86401",
+      "transactionIndex": "0x29",
+      "blockHash": "0x81e598b189fce62f11e9df6dcede8085cc6e68ade94d70fbf42d605fc4447be8",
+      "blockNumber": "0x4ccfef",
+      "from": "0x9606e11178a83C364108e99fFFD2f7F75C99d801",
+      "to": "0xC7f2Cf4845C6db0e1a1e91ED41Bcd0FcC1b0E141",
+      "cumulativeGasUsed": "0x8ad38a",
+      "gasUsed": "0x5248",
+      "contractAddress": null,
+      "logs": [],
+      "status": "0x1",
+      "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "type": "0x2",
+      "effectiveGasPrice": "0xb2a481f66"
+    }
+  ],
+  "libraries": [],
+  "pending": [],
+  "returns": {},
+  "timestamp": 1704552654,
+  "chain": 11155111,
+  "multi": false,
+  "commit": "207c58a"
+}
