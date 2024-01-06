@@ -86,3 +86,12 @@ Before Solidity 8.0.0, mathematical operations could overflow/underflow resultin
 1. In my local test, I first encode the signature of the function `pwn()` to send then send it in the call.
 2. Once I proved the exploit works locally, I proceed to execute the exploit on-chain.
 
+## 7.Force
+
+`Contract instance: 0xB2275762DECB833F784eFd8639Af6464a7758bc5`
+
+### Steps
+There're a few ways to foce ETH into a contract, even if it has no payable function at all. One of them is the use of `selfdestruct()`, which takes an address as parameter and send all the balance of the contract to such address.
+1. To exploit the level, I created another contract that I used to have `1 wei` of balance and trigger `selfdestruct()`
+2. I first test the exploit locally.
+3. Then, I run the code on-chain.
