@@ -3,7 +3,7 @@
 I'll use this repo to track my approach to hack each level of [The Ethernaut](https://ethernaut.openzeppelin.com/)
 
 Folders Structure:
-- instance: levels files from the contract instances
+- instance: level files from the contract instances
 - test: test of the exploit locally
 - script: exploit for each level in the actual chain
 - broadcast: transactions record in sepolia
@@ -22,6 +22,7 @@ Wallet Used: `Sepolia: 0x9606e11178a83C364108e99fFFD2f7F75C99d801` a.k.a. [0xJay
 - [x] 7.Force
 - [x] 8.Vault
 - [x] 9.King
+- [x] 10.Reentrance
 
 ## Testing 
 - To test the code locallly: `forge test --mc ExploitLevel#`

@@ -183,3 +183,20 @@ Local environment: `forge test --mc ExploitLevel9 --rpc-url $SEPOLIA`
 Sepolia: `forge script script/Level9.exp.sol:ExploitLevel9 --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
+
+## 10.Reentrancy
+
+`Ethernaut Instance: 0x05317Bce5110891Fa4c9E764C89bDDD519f5503F`
+
+### Steps
+Reentrancy attacks are one of the most exploited attack vectors in web3. The core issue relies on the contract doing an external call before updating the relevant state variables. In other words, not following CEI pattern, i.e. Checks-Effects-Iterations.
+1. To hack this level, I need to use an `Attack` contract, which has a `receive()` function that will reentrant into the target contract.
+2. I make sure first that the `Attack` contract has enough balance in the instance first.
+3. Then, I call `instance.withdraw()` from the `Attack` contract and when the instance do the call to transfer the ETH, it triggers  `receive()` in the `Attack` contract, wich will continue calling `instance.withdraw()` until funds are drained.
+
+### Running the code
+
+Local environment: `forge test --mc ExploitLevel10`
+Sepolia: `forge script script/Level9.exp.sol:ExploitLevel10 --broadcast --rpc-url $SEPOLIA`
+
+---------------------------------
