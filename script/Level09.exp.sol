@@ -2,7 +2,7 @@
 
 pragma solidity 0.8.0;
 
-import "../instance/Level9.sol";
+import "../instance/Level09.sol";
 import "forge-std/Script.sol";
 
 contract ExploitLevel09 is Script {

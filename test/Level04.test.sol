@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import "../instance/Level4.sol";
+import "../instance/Level04.sol";
 import "forge-std/Test.sol";
 
 contract ExploitLevel04 is Test {

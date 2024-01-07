@@ -3,7 +3,7 @@
 pragma solidity ^0.6.0;
 pragma experimental ABIEncoderV2;
 
-import "../instance/Level5.sol";
+import "../instance/Level05.sol";
 import "forge-std/Test.sol";
 
 contract ExploitLevel05 is Test {

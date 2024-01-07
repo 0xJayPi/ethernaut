@@ -3,7 +3,7 @@
 pragma solidity ^0.6.0;
 pragma experimental ABIEncoderV2;
 
-import "../instance/Level2.sol";
+import "../instance/Level02.sol";
 
 import "forge-std/Test.sol";
 
