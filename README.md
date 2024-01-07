@@ -21,6 +21,7 @@ Wallet Used: `Sepolia: 0x9606e11178a83C364108e99fFFD2f7F75C99d801` a.k.a. [0xJay
 - [x] 6.Delegation
 - [x] 7.Force
 - [x] 8.Vault
+- [x] 9.King
 
 ## Testing 
 - To test the code locallly: `forge test --mc ExploitLevel#`

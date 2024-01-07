@@ -167,3 +167,19 @@ Local environment: `forge test --mc ExploitLevel8 --rpc-url $SEPOLIA`
 Sepolia: `forge script script/Level8.exp.sol --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
+
+## 9.King
+
+`Ethernaut Instance: 0x374085Fb1751CFfF55442837f1094432Ef1F6a3A`
+### Steps
+The vulnerability in the instance resides in the line `payable(king).transfer(msg.value);` inside the `receive()` function. If this `transfer()` fail, the transaction will revert blocking the functionality of the contract (DoS attack). I.e. every time a EOA sends a higher prize to be the king, the transaction will revert. 
+1. I need to use a contract that sends a higher prize and claims the `king`. This contract must NOT have a `receive()` or `fallback()` payable function.
+2. Then, I trigger this contract with a `msg.value` higher than current `prize`.
+3. Whoever tries to be king afterwards will have their transaction reverted because `transfer()` will always fail
+
+### Running the code
+
+Local environment: `forge test --mc ExploitLevel9 --rpc-url $SEPOLIA`
+Sepolia: `forge script script/Level9.exp.sol:ExploitLevel9 --broadcast --rpc-url $SEPOLIA`
+
+---------------------------------

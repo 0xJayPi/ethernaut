@@ -1,0 +1,49 @@
+{
+  "transactions": [
+    {
+      "hash": "0x3c0adfa990bbd31871857ff89c96067db0779b738e0f79ff440b65ea5b65e39b",
+      "transactionType": "CALL",
+      "contractName": "script/Level9.exp.sol:AttackKing",
+      "contractAddress": "0xC7f2Cf4845C6db0e1a1e91ED41Bcd0FcC1b0E141",
+      "function": "attack()",
+      "arguments": [],
+      "transaction": {
+        "type": "0x02",
+        "from": "0x9606e11178a83c364108e99fffd2f7f75c99d801",
+        "to": "0xc7f2cf4845c6db0e1a1e91ed41bcd0fcc1b0e141",
+        "gas": "0x71a6",
+        "value": "0x5af3107a4000",
+        "data": "0x9e5faafc",
+        "nonce": "0x4e",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    }
+  ],
+  "receipts": [
+    {
+      "transactionHash": "0x3c0adfa990bbd31871857ff89c96067db0779b738e0f79ff440b65ea5b65e39b",
+      "transactionIndex": "0x20",
+      "blockHash": "0xf6dfb746e063087b20bc61f5ae1304eebe6bf90ef88044cbbf2069b84c32ed7b",
+      "blockNumber": "0x4cda79",
+      "from": "0x9606e11178a83C364108e99fFFD2f7F75C99d801",
+      "to": "0xC7f2Cf4845C6db0e1a1e91ED41Bcd0FcC1b0E141",
+      "cumulativeGasUsed": "0x42fd86",
+      "gasUsed": "0x5248",
+      "contractAddress": null,
+      "logs": [],
+      "status": "0x1",
+      "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "type": "0x2",
+      "effectiveGasPrice": "0x5a286aea7"
+    }
+  ],
+  "libraries": [],
+  "pending": [],
+  "returns": {},
+  "timestamp": 1704587692,
+  "chain": 11155111,
+  "multi": false,
+  "commit": "53a425b"
+}
