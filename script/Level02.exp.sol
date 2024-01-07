@@ -7,7 +7,7 @@ import "../instance/Level2.sol";
 
 import "forge-std/Script.sol";
 
-contract ExploitLevel2 is Script {
+contract ExploitLevel02 is Script {
     Fallout instance = Fallout(0x8216C602F2A89ec5C915C21C82Cb8E2359fBF033);
 
     function run() external {

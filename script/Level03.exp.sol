@@ -5,7 +5,7 @@ pragma solidity ^0.8.0;
 import "../instance/Level3.sol";
 import "forge-std/Script.sol";
 
-contract ExploitLevel3 is Script {
+contract ExploitLevel03 is Script {
     CoinFlip instance = CoinFlip(0xEF4e4992db2A141d4a15CB284aA32E616d7FE5C6);
 
     function run() external {

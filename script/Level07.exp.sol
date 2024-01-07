@@ -5,7 +5,7 @@ pragma solidity 0.8.0;
 import "../instance/Level7.sol";
 import "forge-std/Script.sol";
 
-contract ExploitLevel7 is Script {
+contract ExploitLevel07 is Script {
     address instance = 0xB2275762DECB833F784eFd8639Af6464a7758bc5;
     AttackKitty attackKitty;
 

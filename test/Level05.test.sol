@@ -6,7 +6,7 @@ pragma experimental ABIEncoderV2;
 import "../instance/Level5.sol";
 import "forge-std/Test.sol";
 
-contract ExploitLevel5 is Test {
+contract ExploitLevel05 is Test {
     Token instance = new Token(100_000);
     address player = 0x9606e11178a83C364108e99fFFD2f7F75C99d801;
 

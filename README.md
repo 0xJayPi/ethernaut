@@ -12,16 +12,16 @@ Wallet Used: `Sepolia: 0x9606e11178a83C364108e99fFFD2f7F75C99d801` a.k.a. [0xJay
 
 ## Levels
 [Walkthrough of each level](https://github.com/0xJayPi/ethernaut/blob/main/instance/README.md)
-- [x] 0.Hello Ethernaut
-- [x] 1.Fallback
-- [x] 2.Fallout
-- [x] 3.CoinFlip
-- [x] 4.Telephone
-- [x] 5.Token
-- [x] 6.Delegation
-- [x] 7.Force
-- [x] 8.Vault
-- [x] 9.King
+- [x] 00.Hello Ethernaut
+- [x] 01.Fallback
+- [x] 02.Fallout
+- [x] 03.CoinFlip
+- [x] 04.Telephone
+- [x] 05.Token
+- [x] 06.Delegation
+- [x] 07.Force
+- [x] 08.Vault
+- [x] 09.King
 - [x] 10.Reentrance
 
 ## Testing 

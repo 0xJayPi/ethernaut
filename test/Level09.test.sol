@@ -5,7 +5,7 @@ pragma solidity 0.8.0;
 import "../instance/Level9.sol";
 import "forge-std/Test.sol";
 
-contract ExploitLevel9 is Test {
+contract ExploitLevel09 is Test {
     King instance;
     AttackKing attackKing;
     address owner = vm.addr(1);

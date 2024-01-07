@@ -5,7 +5,7 @@ pragma solidity 0.8.0;
 import "../instance/Level7.sol";
 import "forge-std/Test.sol";
 
-contract ExploitLevel7 is Test {
+contract ExploitLevel07 is Test {
     Force instance = new Force();
     AttackKitty attackKitty;
 

@@ -5,7 +5,7 @@ pragma solidity ^0.8.0;
 import "../instance/Level4.sol";
 import "forge-std/Script.sol";
 
-contract ExploitLevel4 is Script {
+contract ExploitLevel04 is Script {
     Telephone instance = Telephone(0x5B3BBBB08afA2fD125D0dB3c7c455909D11E5F43);
 
     function run() external {

@@ -7,7 +7,7 @@ import "../instance/Level2.sol";
 
 import "forge-std/Test.sol";
 
-contract ExploitLevel2 is Test {
+contract ExploitLevel02 is Test {
     Fallout instance = new Fallout();
 
     function setUp() external {}

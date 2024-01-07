@@ -1,4 +1,4 @@
-## 0.Hello Ethernaut
+## 00.Hello Ethernaut
 
 `Ethernaut Instance: 0xdBF90CF9aC26b2E2737ED1305eff9CE6e65D7e23`
 
@@ -30,12 +30,12 @@ await contract.password()
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel0`
-Sepolia: `forge script script/Level0.exp.sol --broadcast --rpc-url $SEPOLIA`
+Local environment: `forge test --mc ExploitLevel00`
+Sepolia: `forge script script/Level00.exp.sol --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
 
-## 1.Fallback
+## 01.Fallback
 
 `Ethernaut Instance: 0x890CD86886Ff5eDB815aF03cb040D86A36fB5A75`
 
@@ -49,12 +49,12 @@ The objective is to trigger `receive()` without reverting. To this end, I need t
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel1`
-Sepolia: `forge script script/Level1.exp.sol --broadcast --rpc-url $SEPOLIA`
+Local environment: `forge test --mc ExploitLevel01`
+Sepolia: `forge script script/Level01.exp.sol --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
 
-## 2.Fallout
+## 02.Fallout
 
 `Ethernaut Instance: 0x8216C602F2A89ec5C915C21C82Cb8E2359fBF033`
 
@@ -64,12 +64,12 @@ In older versions of solidity, you would name the constructor with the same name
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel2`
-Sepolia: `forge script script/Level2.exp.sol --broadcast --rpc-url $SEPOLIA`
+Local environment: `forge test --mc ExploitLevel02`
+Sepolia: `forge script script/Level02.exp.sol --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
 
-## 3.CoinFlip
+## 03.CoinFlip
 
 `Ethernaut Instance: 0xEF4e4992db2A141d4a15CB284aA32E616d7FE5C6`
 
@@ -82,12 +82,12 @@ On chain randonmess is not possible as of today, because information on-chain is
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel3`
-Sepolia: `forge script script/Level3.exp.sol:ExploitLevel3 --broadcast --rpc-url $SEPOLIA`
+Local environment: `forge test --mc ExploitLevel03`
+Sepolia: `forge script script/Level03.exp.sol:ExploitLevel03 --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
 
-## 4.Telephone
+## 04.Telephone
 
 `Ethernaut Instance: 0x5B3BBBB08afA2fD125D0dB3c7c455909D11E5F43`
 
@@ -98,12 +98,12 @@ It's fundamental to understand the difference between `tx.origin` and `msg.sende
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel4`
-Sepolia: `forge script script/Level4.exp.sol:ExploitLevel4 --broadcast --rpc-url $SEPOLIA`
+Local environment: `forge test --mc ExploitLevel04`
+Sepolia: `forge script script/Level04.exp.sol:ExploitLevel04 --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
 
-## 5.Token
+## 05.Token
 
 `Ethernaut Instance: 0x21d06aC321053C031aefd719D08f86A3aaf7723d`
 
@@ -114,12 +114,12 @@ Before Solidity 8.0.0, mathematical operations could overflow/underflow resultin
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel5`
-Sepolia: `forge script script/Level5.exp.sol --broadcast --rpc-url $SEPOLIA`
+Local environment: `forge test --mc ExploitLevel05`
+Sepolia: `forge script script/Level05.exp.sol --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
 
-## 6.Delegation
+## 06.Delegation
 
 `Ethernaut Instance: 0x298e1F2cf32a2635C24699821D48c42Ad2d53456`
 
@@ -130,12 +130,12 @@ Sepolia: `forge script script/Level5.exp.sol --broadcast --rpc-url $SEPOLIA`
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel6`
-Sepolia: `forge script script/Level6.exp.sol --broadcast --rpc-url $SEPOLIA`
+Local environment: `forge test --mc ExploitLevel06`
+Sepolia: `forge script script/Level06.exp.sol --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
 
-## 7.Force
+## 07.Force
 
 `Ethernaut Instance: 0xB2275762DECB833F784eFd8639Af6464a7758bc5`
 
@@ -147,12 +147,12 @@ There're a few ways to foce ETH into a contract, even if it has no payable funct
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel7`
-Sepolia: `forge script script/Level7.exp.sol:ExploitLevel7 --broadcast --rpc-url $SEPOLIA`
+Local environment: `forge test --mc ExploitLevel07`
+Sepolia: `forge script script/Level07.exp.sol:ExploitLevel07 --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
 
-## 8.Vault
+## 08.Vault
 
 `Ethernaut Instance: 0x64f630b9B9035B21413fB85C0CAB5ADd53049587`
 
@@ -163,12 +163,12 @@ It's import to remember that setting `private` to variables only prevent them fr
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel8 --rpc-url $SEPOLIA`
-Sepolia: `forge script script/Level8.exp.sol --broadcast --rpc-url $SEPOLIA`
+Local environment: `forge test --mc ExploitLevel08 --rpc-url $SEPOLIA`
+Sepolia: `forge script script/Level08.exp.sol --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
 
-## 9.King
+## 09.King
 
 `Ethernaut Instance: 0x374085Fb1751CFfF55442837f1094432Ef1F6a3A`
 ### Steps
@@ -179,8 +179,8 @@ The vulnerability in the instance resides in the line `payable(king).transfer(ms
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel9 --rpc-url $SEPOLIA`
-Sepolia: `forge script script/Level9.exp.sol:ExploitLevel9 --broadcast --rpc-url $SEPOLIA`
+Local environment: `forge test --mc ExploitLevel09 --rpc-url $SEPOLIA`
+Sepolia: `forge script script/Level09.exp.sol:ExploitLevel09 --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
 

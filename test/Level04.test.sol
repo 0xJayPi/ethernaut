@@ -5,7 +5,7 @@ pragma solidity ^0.8.0;
 import "../instance/Level4.sol";
 import "forge-std/Test.sol";
 
-contract ExploitLevel4 is Test {
+contract ExploitLevel04 is Test {
     Telephone instance = new Telephone();
 
     function testExploit() external {
