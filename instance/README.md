@@ -203,7 +203,7 @@ Sepolia: `forge script script/Level10.exp.sol:ExploitLevel10 --broadcast --rpc-u
 
 ## 11.Elevator
 
-`Ethernaut instance: 0x2DfA43D2504786BD3DB86c9dFBDcbC12Fb802D4F`
+`Ethernaut Instance: 0x2DfA43D2504786BD3DB86c9dFBDcbC12Fb802D4F`
 
 ### Steps
 Here I need to differentiate between calls to `msg.sender`, meaning that if it's the first call I'll reply `false` and then, when the second call comes I'll reply `true`.
@@ -215,5 +215,31 @@ Here I need to differentiate between calls to `msg.sender`, meaning that if it's
 
 Local environment: `forge test --mc ExploitLevel11`
 Sepolia: `forge script script/Level11.exp.sol:ExploitLevel11 --broadcast --rpc-url $SEPOLIA`
+
+---------------------------------
+
+## 12.Privacy
+
+`Ehternaut Instance: 0x762db17A37E974b80ed9b5Ccc1c57c6Ca8eF3B40`
+
+### Steps
+The same as in level 08.Vault applies for this case, no data on-chain is private. The challenge for this case reside on properly understanding the storage layout of the EVM:
+```solidity
+bool public locked = true; // slot 0
+uint256 public ID = block.timestamp; // slot 1
+uint8 private flattening = 10; // slot 2
+uint8 private denomination = 255; // slot 2
+uint16 private awkwardness = uint16(block.timestamp); // slot 2
+bytes32[3] private data; // slot 3 to 6
+```
+To undesrtand what we're looking for, I check the require in the `unlock()` function: `require(_key == bytes16(data[2]));`. Thus, the key is found in the `bytes32[2]` variable, i.e. `slot 5`.
+1. I use `cast` to read the storage of the instance: `cast storage 0x762db17A37E974b80ed9b5Ccc1c57c6Ca8eF3B40 5 --rpc-url $SEPOLIA`
+2. Now that I have the value of `slot 5`, I cast it into 16 bytes, since this is the parameter type of the `unlock()` function.
+3. And call `unlock()`
+
+### Running the code
+
+Local environment: `forge test --mc ExploitLevel12`
+Sepolia: `forge script script/Level12.exp.sol:ExploitLevel12 --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
