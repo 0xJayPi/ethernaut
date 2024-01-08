@@ -197,6 +197,23 @@ Reentrancy attacks are one of the most exploited attack vectors in web3. The cor
 ### Running the code
 
 Local environment: `forge test --mc ExploitLevel10`
-Sepolia: `forge script script/Level9.exp.sol:ExploitLevel10 --broadcast --rpc-url $SEPOLIA`
+Sepolia: `forge script script/Level10.exp.sol:ExploitLevel10 --broadcast --rpc-url $SEPOLIA`
+
+---------------------------------
+
+## 11.Elevator
+
+`Ethernaut instance: 0x2DfA43D2504786BD3DB86c9dFBDcbC12Fb802D4F`
+
+### Steps
+Here I need to differentiate between calls to `msg.sender`, meaning that if it's the first call I'll reply `false` and then, when the second call comes I'll reply `true`.
+1. I need to have a contract which is the actual caller of `Elevator`.
+2. This contract needs to have the function in the interface `function isLastFloor(uint256) external returns (bool)` so that it can be called by the `Elevator`.
+3. And within the `isLastFloor()` function in the attacking contract I set a bool to differentiate whether the contract was already called or not. 
+
+### Running the code
+
+Local environment: `forge test --mc ExploitLevel11`
+Sepolia: `forge script script/Level11.exp.sol:ExploitLevel11 --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
