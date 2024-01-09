@@ -30,7 +30,7 @@ await contract.password()
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel00`
+Local environment: `forge test --mc ExploitLevel00` || 
 Sepolia: `forge script script/Level00.exp.sol --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
@@ -49,7 +49,7 @@ The objective is to trigger `receive()` without reverting. To this end, I need t
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel01`
+Local environment: `forge test --mc ExploitLevel01` || 
 Sepolia: `forge script script/Level01.exp.sol --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
@@ -64,7 +64,7 @@ In older versions of solidity, you would name the constructor with the same name
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel02`
+Local environment: `forge test --mc ExploitLevel02` || 
 Sepolia: `forge script script/Level02.exp.sol --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
@@ -82,7 +82,7 @@ On chain randonmess is not possible as of today, because information on-chain is
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel03`
+Local environment: `forge test --mc ExploitLevel03` || 
 Sepolia: `forge script script/Level03.exp.sol:ExploitLevel03 --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
@@ -98,7 +98,7 @@ It's fundamental to understand the difference between `tx.origin` and `msg.sende
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel04`
+Local environment: `forge test --mc ExploitLevel04` || 
 Sepolia: `forge script script/Level04.exp.sol:ExploitLevel04 --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
@@ -114,7 +114,7 @@ Before Solidity 8.0.0, mathematical operations could overflow/underflow resultin
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel05`
+Local environment: `forge test --mc ExploitLevel05` || 
 Sepolia: `forge script script/Level05.exp.sol --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
@@ -130,7 +130,7 @@ Sepolia: `forge script script/Level05.exp.sol --broadcast --rpc-url $SEPOLIA`
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel06`
+Local environment: `forge test --mc ExploitLevel06` || 
 Sepolia: `forge script script/Level06.exp.sol --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
@@ -147,7 +147,7 @@ There're a few ways to foce ETH into a contract, even if it has no payable funct
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel07`
+Local environment: `forge test --mc ExploitLevel07` || 
 Sepolia: `forge script script/Level07.exp.sol:ExploitLevel07 --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
@@ -163,7 +163,7 @@ It's import to remember that setting `private` to variables only prevent them fr
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel08 --rpc-url $SEPOLIA`
+Local environment: `forge test --mc ExploitLevel08 --rpc-url $SEPOLIA` || 
 Sepolia: `forge script script/Level08.exp.sol --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
@@ -179,7 +179,7 @@ The vulnerability in the instance resides in the line `payable(king).transfer(ms
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel09 --rpc-url $SEPOLIA`
+Local environment: `forge test --mc ExploitLevel09 --rpc-url $SEPOLIA` || 
 Sepolia: `forge script script/Level09.exp.sol:ExploitLevel09 --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
@@ -196,7 +196,7 @@ Reentrancy attacks are one of the most exploited attack vectors in web3. The cor
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel10`
+Local environment: `forge test --mc ExploitLevel10` || 
 Sepolia: `forge script script/Level10.exp.sol:ExploitLevel10 --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
@@ -213,7 +213,7 @@ Here I need to differentiate between calls to `msg.sender`, meaning that if it's
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel11`
+Local environment: `forge test --mc ExploitLevel11` || 
 Sepolia: `forge script script/Level11.exp.sol:ExploitLevel11 --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
@@ -239,7 +239,7 @@ To undesrtand what we're looking for, I check the require in the `unlock()` func
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel12`
+Local environment: `forge test --mc ExploitLevel12` || 
 Sepolia: `forge script script/Level12.exp.sol:ExploitLevel12 --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
@@ -267,7 +267,31 @@ In solidity I can apply a "mask" to the input with the "AND" operator.
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel13`
+Local environment: `forge test --mc ExploitLevel13` || 
 Sepolia: `forge script script/Level13.exp.sol:ExploitLevel13 --broadcast --rpc-url $SEPOLIA`
+
+---------------------------------
+
+## 14.GatekeeperOne
+
+`Ethereum Instance: 0xEADfE8A7437e3fb7ce09035f4bce521D29fDbd5C`
+
+### Steps
+I'll plan my attack gate by gate so that I crack one challenge at the time.
+#### _GateOne_
+To make `msg.sender != tx.origin` I need to use a contract that will perform the calls to the instance.
+
+#### _GateTwo_
+Here, the require is looking for the `msg.sender` to not have code, `extcodesize(caller()`. Considering that I need to use another contract to unlock _GateOne_, I have to use a workaround to make the call from a contract which actually have no code in it. 
+1. At the moment of creation, there's yet no code in the contract on-chain. So I have to execute all the code within the `constructor()`
+
+#### _GateThree_
+Taking into account how XOR Gates work, if I do a XOR of the result with one of the variables, I obtain the other variable.
+1. I have to do a little of reverse engineering to obtain the `gateKey`, `bytes8 gateKey = bytes8(uint64(bytes8(keccak256(abi.encodePacked(address(this))))) ^ type(uint64).max);`
+
+### Running the code
+
+Local environment: `forge test --mc ExploitLevel14` || 
+Sepolia: `forge script script/Level14.exp.sol:ExploitLevel14 --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
