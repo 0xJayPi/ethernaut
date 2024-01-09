@@ -295,3 +295,20 @@ Local environment: `forge test --mc ExploitLevel14` ||
 Sepolia: `forge script script/Level14.exp.sol:ExploitLevel14 --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
+
+## 15.NaughtCoin
+
+`Ethereum Instance: 0x46a0b1BA3425e277c27851a6E575bBB0669eE21b`
+
+### Steps
+Here the `NaughCoin` contract is not considering all the functions that it's inheriting from `ERC20.sol`. In this case, I can exploit `transferFrom()`.
+1. I use a contract to transfer my coins to it, named `AttackNaughtCoin`.
+2. Next, I call `approve()` with my total balance as `amount` and the addres of the attack contract as `to`.
+3. Finally, I make the attack contract transfer of my balance to itself using the `transfer()` function in `AttackNaughtCoin`.
+
+### Running the code
+
+Local environment: `forge test --mc ExploitLevel15` || 
+Sepolia: `forge script script/Level15.exp.sol:ExploitLevel15 --broadcast --rpc-url $SEPOLIA`
+
+---------------------------------
