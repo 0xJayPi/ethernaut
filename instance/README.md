@@ -243,3 +243,31 @@ Local environment: `forge test --mc ExploitLevel12`
 Sepolia: `forge script script/Level12.exp.sol:ExploitLevel12 --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
+
+## 13.GatekeeperOne
+
+`Ethereum Instance: 0x7CF153d2D53843c52A81d7366491dc1bdB2a118e`
+
+### Steps
+I'll plan my attack gate by gate so that I crack one challenge at the time.
+#### _GateOne_
+To make `msg.sender != tx.origin` I need to use a contract that will perform the calls to the instance.
+
+#### _GateTwo_
+I chose to tackle this gate by brute force. 
+1. Within my contract, I create a foor loop.
+2. And do a `call` to the instance function `enter()` to find the value of `i`, `address(instance).call{gas: i + (8191 * 3)}(abi.encodeWithSignature("enter(bytes8)", _gateKey));`. To be clear, I do a `call`, insteand of calling `enter()` at once, to avoid the tx from reverting.
+3. In the script I used on-chain, I divided the process in two, just for the sake of gas consumptiom. So `attackSim()` is not broadcasted and used to find the value of `i`, which I then send to `attackReal()` that is broadcasted.
+
+#### _GateThree_
+In solidity I can apply a "mask" to the input with the "AND" operator. 
+1. Let's start with the first require: `uint32(uint64(_gateKey)) == uint16(uint64(_gateKey))`. The right-most 2 bytes must equal the right-most 4 bytes. It means that I want to "remove" the 2 left-most bytes of those 4 bytes but maintain the value of the right-most one. Because what I want is to make 0x11111111 be equal to 0x00001111. The mask to accomplish this is equal to `0x0000FFFF`.
+3. Then, I move to the second require: `uint32(uint64(_gateKey)) != uint64(_gateKey)`. The right-most 8 bytes of the input must be different compared to the right-most 4 bytes. I need to remember that I also need to maintain the first requirement. So I need to make 0x00000000001111 be != 0xXXXXXXXX00001111. I need to update our mask to make all the first 4 bytes "pass" to the output. The new mask will be `0xFFFFFFFF0000FFF`
+4. Now, the third require: `uint64(_gateKey)) == uint16(uint160(tx.origin)`. I  need to apply the mask to `tx.origin` casted to a bytes8 to pass the this condition, `bytes8(uint64(uint160(tx.origin))) & 0xFFFFFFFF0000FFFF`
+
+### Running the code
+
+Local environment: `forge test --mc ExploitLevel13`
+Sepolia: `forge script script/Level13.exp.sol:ExploitLevel13 --broadcast --rpc-url $SEPOLIA`
+
+---------------------------------
