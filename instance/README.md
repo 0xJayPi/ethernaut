@@ -332,3 +332,17 @@ Sepolia: `forge script script/Level16.exp.sol:ExploitLevel16 --broadcast --rpc-u
 
 ---------------------------------
 
+## 17.Recovery 
+
+`Ethereum Instance: 0xCaB3f916ee9686a5212eE054064Abe656Fc5c6fD`
+
+### Steps
+Though I don't have the address of the token created, I do have the address of the contract factory for the level, `0xAF98ab8F2e2B24F42C661ed023237f5B7acAB048`. So, I can go into https://sepolia.etherscan.io/ and review the transactions to identify the one that created the instance, which is `0xa0ff1caed0bd962641095cea821de07bd29af58fbbf723d16ba47439d18055ed`. Then, digging into the transaction, I can see the addres of the token missed, `0x385321Bc1037590fb1EE572e0EbE933021140424`, and the address of the creator, `0xAF98ab8F2e2B24F42C661ed023237f5B7acAB048`.
+1. Now, with the information previously collected, I called the `destroy()` function in the token instance.
+
+### Running the code
+
+Local environment: `forge test --mc ExploitLevel16` || 
+Sepolia: `forge script script/Level16.exp.sol:ExploitLevel16 --broadcast --rpc-url $SEPOLIA`
+
+---------------------------------
