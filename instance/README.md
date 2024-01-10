@@ -312,3 +312,23 @@ Local environment: `forge test --mc ExploitLevel15` ||
 Sepolia: `forge script script/Level15.exp.sol:ExploitLevel15 --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
+
+## 16.Preservation
+
+`Ethereum Instance: 0x9dc2DC6421704EB1161c7c5917C1CDdd0f5854B9`
+
+### Steps
+When a `delegatecall()` is done, the code of `callee` is executed in the context of the `caller`. Hence, `LibraryContract.setTime()` is not actually updating the storage of `LibraryContract` but the storage of `Preservation` instead.
+1. I need to replace one of the `timeZoneLibrary` address with a contract address I control in order to update the storage of `Preservation`.
+2. So I created a contract `AttackPreservation` and used its address to replace the `timeZone1Library` one.
+To consider, when calling `Preservation.setFirstTime()`, this function is not actually updating `LibraryContract.storedTime` as it first look like. The call updates `Preservation.timeZone1Library` because what it was mentioned before
+3. Now, I casted the address of `AttackPreservation` in a uint256 to pass it as parameter of `Preservation.setFirstTime(uint)`. See `uint256(uint160(address(attackP)))`
+4. At this point, I had already replaced the address of `timeZone1Library` with the address of `AttackPreservation`. Then, I called `Preservation.setFirstTime()` which is now calling `AttackPreservation.setTime` and changing the value of `Preservation.owner` to the address I chose.
+
+### Running the code
+
+Local environment: `forge test --mc ExploitLevel16` || 
+Sepolia: `forge script script/Level16.exp.sol:ExploitLevel16 --broadcast --rpc-url $SEPOLIA`
+
+---------------------------------
+
