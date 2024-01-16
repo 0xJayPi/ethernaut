@@ -171,6 +171,7 @@ Sepolia: `forge script script/Level08.exp.sol --broadcast --rpc-url $SEPOLIA`
 ## 09.King
 
 `Ethernaut Instance: 0x374085Fb1751CFfF55442837f1094432Ef1F6a3A`
+
 ### Steps
 The vulnerability in the instance resides in the line `payable(king).transfer(msg.value);` inside the `receive()` function. If this `transfer()` fail, the transaction will revert blocking the functionality of the contract (DoS attack). I.e. every time a EOA sends a higher prize to be the king, the transaction will revert. 
 1. I need to use a contract that sends a higher prize and claims the `king`. This contract must NOT have a `receive()` or `fallback()` payable function.
@@ -220,7 +221,7 @@ Sepolia: `forge script script/Level11.exp.sol:ExploitLevel11 --broadcast --rpc-u
 
 ## 12.Privacy
 
-`Ehternaut Instance: 0x762db17A37E974b80ed9b5Ccc1c57c6Ca8eF3B40`
+`Ethernaut Instance: 0x762db17A37E974b80ed9b5Ccc1c57c6Ca8eF3B40`
 
 ### Steps
 The same as in level 08.Vault applies for this case, no data on-chain is private. The challenge for this case reside on properly understanding the storage layout of the EVM:
@@ -246,7 +247,7 @@ Sepolia: `forge script script/Level12.exp.sol:ExploitLevel12 --broadcast --rpc-u
 
 ## 13.GatekeeperOne
 
-`Ethereum Instance: 0x7CF153d2D53843c52A81d7366491dc1bdB2a118e`
+`Ethernaut Instance: 0x7CF153d2D53843c52A81d7366491dc1bdB2a118e`
 
 ### Steps
 I'll plan my attack gate by gate so that I crack one challenge at the time.
@@ -274,7 +275,7 @@ Sepolia: `forge script script/Level13.exp.sol:ExploitLevel13 --broadcast --rpc-u
 
 ## 14.GatekeeperOne
 
-`Ethereum Instance: 0xEADfE8A7437e3fb7ce09035f4bce521D29fDbd5C`
+`Ethernaut Instance: 0xEADfE8A7437e3fb7ce09035f4bce521D29fDbd5C`
 
 ### Steps
 I'll plan my attack gate by gate so that I crack one challenge at the time.
@@ -298,7 +299,7 @@ Sepolia: `forge script script/Level14.exp.sol:ExploitLevel14 --broadcast --rpc-u
 
 ## 15.NaughtCoin
 
-`Ethereum Instance: 0x46a0b1BA3425e277c27851a6E575bBB0669eE21b`
+`Ethernaut Instance: 0x46a0b1BA3425e277c27851a6E575bBB0669eE21b`
 
 ### Steps
 Here the `NaughCoin` contract is not considering all the functions that it's inheriting from `ERC20.sol`. In this case, I can exploit `transferFrom()`.
@@ -315,7 +316,7 @@ Sepolia: `forge script script/Level15.exp.sol:ExploitLevel15 --broadcast --rpc-u
 
 ## 16.Preservation
 
-`Ethereum Instance: 0x9dc2DC6421704EB1161c7c5917C1CDdd0f5854B9`
+`Ethernaut Instance: 0x9dc2DC6421704EB1161c7c5917C1CDdd0f5854B9`
 
 ### Steps
 When a `delegatecall()` is done, the code of `callee` is executed in the context of the `caller`. Hence, `LibraryContract.setTime()` is not actually updating the storage of `LibraryContract` but the storage of `Preservation` instead.
@@ -334,7 +335,7 @@ Sepolia: `forge script script/Level16.exp.sol:ExploitLevel16 --broadcast --rpc-u
 
 ## 17.Recovery 
 
-`Ethereum Instance: 0xCaB3f916ee9686a5212eE054064Abe656Fc5c6fD`
+`Ethernaut Instance: 0xCaB3f916ee9686a5212eE054064Abe656Fc5c6fD`
 
 ### Steps
 Though I don't have the address of the token created, I do have the address of the contract factory for the level, `0xAF98ab8F2e2B24F42C661ed023237f5B7acAB048`. So, I can go into https://sepolia.etherscan.io/ and review the transactions to identify the one that created the instance, which is `0xa0ff1caed0bd962641095cea821de07bd29af58fbbf723d16ba47439d18055ed`. Then, digging into the transaction, I can see the addres of the token missed, `0x385321Bc1037590fb1EE572e0EbE933021140424`, and the address of the creator, `0xAF98ab8F2e2B24F42C661ed023237f5B7acAB048`.
@@ -346,3 +347,43 @@ Local environment: `forge test --mc ExploitLevel16` ||
 Sepolia: `forge script script/Level16.exp.sol:ExploitLevel16 --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
+
+## 18.Magic Number
+
+`Ethernaut Instance: 0x9997d552B662f666372EA436F4D6086652cd3474`
+
+### Steps
+To unlock this level, I have to use the evm opcodes in order to build the binary of the contract. Then, I create the contract using the opcode `CREATE` and store the address in `instance.solver`.
+1. The `runtime bytecode` will retrieve the value `42` in hex, `2a`. So, first I need to store this value so then I can return it:
+
+```solidity
+0x602a  = PUSH(0x2a) => push 2a into the stack
+0x6080  = PUSH(0x80) => push a random memory slot (80)
+0x52    = MSTORE => store value p=0x2a at position v=0x80
+0x6020  = PUSH(0x20) =>  size of value is 32 bytes
+0x6080  = PUSH(0x80) =>  position in slot 0x80
+0xf3    = RETURN => return value at p=0x80 slot and of size s=0x20
+
+```
+`Runtime Bytecode: 602a60805260206080f3`
+
+2. Now, I have to build the `initialization bytecode` that will duplicate the `runtime bytecode` so then it's returned to the EVM:
+
+```solidity
+0x600a  = PUSH(0x0a) => `s=0x0a` or 10 bytes
+0x600c  = PUSH(0x0c) => position of the runtime code, 0x (12 in decimals)
+0x6000  = PUSH(0x00) => `t=0x00` - arbitrary chosen memory location
+0x39    = CODECOPY => calling the CODECOPY with all the arguments
+0x600a  = PUSH(0x0a) => size of opcode is 10 bytes
+0x6000  = PUSH(0x00) => value was stored in slot 0x00
+0xf3    = RETURN => return value at p=0x00 slot and of size s=0x0a
+```
+`Initiation Bytecode: 600a600c600039600a6000f3`
+
+`Final Bytecode: 600a600c600039600a6000f3602a60505260206050f3 (Initation Bytecode + Runtime Bytecode)`
+
+3. Finally, I have to use the `Final Bytecode` to create the contract and pass the address to the `Ethernaut Instance`.
+
+### Running the code
+
+Sepolia: `forge script script/Level18.exp.sol --broadcast --rpc-url $SEPOLIA`
