@@ -388,12 +388,14 @@ To unlock this level, I have to use the evm opcodes in order to build the binary
 
 Sepolia: `forge script script/Level18.exp.sol --broadcast --rpc-url $SEPOLIA`
 
+---------------------------------
+
 ## 19.Alien Codex
 
 `Ethernaut Instance: 0x052b8cbFd3c459DCFAB4E53ef8a56062Ac0aBf77`
 
 ### Steps
-Though there's no function to modify the owner in the ABI, I can still play around with the dynamic array `codex`. Likewise, being Solidity 0.5.0, I can also overflow/underflow uints/ints. Having this in maind, I took a look to the storage layout of the contract
+Though there's no function to modify the owner in the ABI, I can still play around with the dynamic array `codex`. Likewise, being Solidity 0.5.0, I can also overflow/underflow uints/ints. Having this in maind, I took a look at the storage layout of the contract
 ```solidity
 address owner; // slot 0
 bool public contact; // slot 0
@@ -409,3 +411,38 @@ So, My objective now is to reach slot 0 using the index of `codex` and overwrite
 ### Running the code
 
 Sepolia: `forge script script/Level19.exp.sol --broadcast --rpc-url $SEPOLIA`
+
+---------------------------------
+
+## 20.Denial
+
+`Ethernaut Instance: 0xa1D42DA2040f7047721b77773f875832204DfbBA`
+
+### Steps
+I need to take advantage of managing the address that `withdraw()`. By using `call()` all the remaining gas is forwarded with the transaction, if no limit is set. Hence, I can consume all the remaining gas to make `withdraw()` always fail.
+1. I create a contract and add the `receive()` function to be triggered by the instance `call()`.
+2. There are a few mechanisms to consume gas, but I chose to use an infinite while loop.
+3. Now, every time that `withdraw()` is called, I'll consume all the gas and cause a DoS.
+
+### Running the code
+
+Sepolia: `forge script script/Level20.exp.sol --broadcast --rpc-url $SEPOLIA`
+
+---------------------------------
+
+## 21.Shop
+
+`Ethernaut Instance: 0x6D54C806384AF05Ca8338B8E8153D51886BBB46D`
+
+### Steps
+The attack vector in this level resides on the `buy()` making 2 calls to `Buyer` instance. So, I can return 2 different answers.
+1. I create a contract and add the function `price()` to it.
+2. Now, I have to add a check to differentiate the 1st from the 2nd call.
+3. Finally, I return two different values to match the conditions of the `if()` and set the price I want.
+
+### Running the code
+
+Local environment: `forge test --mc ExploitLevel21` || 
+Sepolia: `forge script script/Level21.exp.sol:ExploitLevel21 --broadcast --rpc-url $SEPOLIA`
+
+---------------------------------

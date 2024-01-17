@@ -1,0 +1,49 @@
+{
+  "transactions": [
+    {
+      "hash": "0xc72779a485488d49c318529a24a56ae28a53e4a46a00b5f4c3be110025045739",
+      "transactionType": "CALL",
+      "contractName": "script/Level21.exp.sol:AttackShop",
+      "contractAddress": "0xC7f2Cf4845C6db0e1a1e91ED41Bcd0FcC1b0E141",
+      "function": "attack()",
+      "arguments": [],
+      "transaction": {
+        "type": "0x02",
+        "from": "0x9606e11178a83c364108e99fffd2f7f75c99d801",
+        "to": "0xc7f2cf4845c6db0e1a1e91ed41bcd0fcc1b0e141",
+        "gas": "0x71a6",
+        "value": "0x0",
+        "data": "0x9e5faafc",
+        "nonce": "0xa5",
+        "accessList": []
+      },
+      "additionalContracts": [],
+      "isFixedGasLimit": false
+    }
+  ],
+  "receipts": [
+    {
+      "transactionHash": "0xc72779a485488d49c318529a24a56ae28a53e4a46a00b5f4c3be110025045739",
+      "transactionIndex": "0xe",
+      "blockHash": "0x03ea2867495f675785dc5d3246b40f9445713402c72452e4e8ea096732222ef4",
+      "blockNumber": "0x4de33a",
+      "from": "0x9606e11178a83C364108e99fFFD2f7F75C99d801",
+      "to": "0xC7f2Cf4845C6db0e1a1e91ED41Bcd0FcC1b0E141",
+      "cumulativeGasUsed": "0x692cf",
+      "gasUsed": "0x5248",
+      "contractAddress": null,
+      "logs": [],
+      "status": "0x1",
+      "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "type": "0x2",
+      "effectiveGasPrice": "0x1df2f33eb"
+    }
+  ],
+  "libraries": [],
+  "pending": [],
+  "returns": {},
+  "timestamp": 1705527714,
+  "chain": 11155111,
+  "multi": false,
+  "commit": "8089a58"
+}
