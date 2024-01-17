@@ -446,3 +446,30 @@ Local environment: `forge test --mc ExploitLevel21` ||
 Sepolia: `forge script script/Level21.exp.sol:ExploitLevel21 --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
+
+## 22.Dex
+
+`Ethernaut Instance: 0x4B11d4B0591CEd555E7fd68DF3527614D23076C1`
+
+### Steps
+The vulnerability is located in the `getSwapPrice()` function since it's calculating the `swapAmount` not considering that Solidity has no floating point variables. Thus, on each operation I'll receive more tokens because of precission lost. I did the calculation and tested the results locally first.
+```
+/**
+ * Calculations
+ *     Dex Token1: 100, Token2: 100 || Player Token1:  10, Token2:  10 || swap: 10 token1
+ *     Dex Token1: 110, Token2:  90 || Player Token1:   0, Token2:  20 || swap: 20 token2
+ *     Dex Token1:  86, Token2: 110 || Player Token1:  24, Token2:   0 || swap: 24 token1
+ *     Dex Token1: 110, Token2:  80 || Player Token1:   0, Token2:  30 || swap: 30 token2
+ *     Dex Token1:  69, Token2: 110 || Player Token1:  41, Token2:   0 || swap: 41 token1
+ *     Dex Token1: 110, Token2:  45 || Player Token1:   0, Token2:  65 || swap: 45 token2
+ *     Dex Token1:   0, Token2:  90 || Player Token1: 110, Token2:  20
+ */
+ ```
+1. Now that the math is done, I only need to swap these amounts until completely draining one of the tokens.
+
+### Running the code
+
+Local environment: `forge test --mc ExploitLevel22` || 
+Sepolia: `forge script script/Level22.exp.sol --broadcast --rpc-url $SEPOLIA`
+
+---------------------------------
