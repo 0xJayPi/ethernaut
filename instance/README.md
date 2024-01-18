@@ -453,15 +453,17 @@ Sepolia: `forge script script/Level21.exp.sol:ExploitLevel21 --broadcast --rpc-u
 
 ### Steps
 The vulnerability is located in the `getSwapPrice()` function since it's calculating the `swapAmount` not considering that Solidity has no floating point variables. Thus, on each operation I'll receive more tokens because of precission lost. I did the calculation and tested the results locally first.
-```
+
+```solidity
+(amount * IERC20(to).balanceOf(address(this))) / IERC20(from).balanceOf(address(this))
 /**
  * Calculations
- *     Dex Token1: 100, Token2: 100 || Player Token1:  10, Token2:  10 || swap: 10 token1
- *     Dex Token1: 110, Token2:  90 || Player Token1:   0, Token2:  20 || swap: 20 token2
- *     Dex Token1:  86, Token2: 110 || Player Token1:  24, Token2:   0 || swap: 24 token1
- *     Dex Token1: 110, Token2:  80 || Player Token1:   0, Token2:  30 || swap: 30 token2
- *     Dex Token1:  69, Token2: 110 || Player Token1:  41, Token2:   0 || swap: 41 token1
- *     Dex Token1: 110, Token2:  45 || Player Token1:   0, Token2:  65 || swap: 45 token2
+ *     Dex Token1: 100, Token2: 100 || Player Token1:  10, Token2:  10 || swap: 10 token1 => (10 * 100) / 100 = 10
+ *     Dex Token1: 110, Token2:  90 || Player Token1:   0, Token2:  20 || swap: 20 token2 => (20 * 110) / 90 = 24
+ *     Dex Token1:  86, Token2: 110 || Player Token1:  24, Token2:   0 || swap: 24 token1 => (24 * 110) / 86 = 30
+ *     Dex Token1: 110, Token2:  80 || Player Token1:   0, Token2:  30 || swap: 30 token2 => (30 * 110) / 80 = 41
+ *     Dex Token1:  69, Token2: 110 || Player Token1:  41, Token2:   0 || swap: 41 token1 => (41 * 110) / 69 = 65
+ *     Dex Token1: 110, Token2:  45 || Player Token1:   0, Token2:  65 || swap: 45 token2 => (45 * 110) / 45 = 110
  *     Dex Token1:   0, Token2:  90 || Player Token1: 110, Token2:  20
  */
  ```
@@ -473,3 +475,28 @@ Local environment: `forge test --mc ExploitLevel22` ||
 Sepolia: `forge script script/Level22.exp.sol --broadcast --rpc-url $SEPOLIA`
 
 ---------------------------------
+
+## 23.Dex Two
+
+`Ethernaut Instance: 0x808FD0D3193559D39E4d31B5656a19791A3C7707`
+
+### Steps
+This is the very same code as in challenge 22 but missing the token address check in `swap()` => `require(IERC20(from).balanceOf(msg.sender) >= amount, "Not enough to swap");`. Thus, I can create an ERC20 token myself and swap it for any of `token1` or `token2` in the Dex.
+
+```solidity
+(amount * IERC20(to).balanceOf(address(this))) / IERC20(from).balanceOf(address(this))
+/**
+ * Calculations
+ *     Dex Token1: 100, fake1: 1 || Player Token1:  10, fake1:  1 || swap: 1 fake1 for token1 => (1 * 100) / 100 = 100
+ *     Dex Token2: 100, fake2: 1 || Player Token2:  10, fake2:  1 || swap: 1 fake2 for token2 => (1 * 100) / 100 = 100
+ *     Dex Token1: 0, token2: 0  || Player Token1:  110, token2:  110
+ */
+ ```
+
+1. Now that the math is done, I only need to swap these amounts to drain the tokens.
+
+### Running the code
+
+Local environment: `forge test --mc ExploitLevel23` || 
+Sepolia: `forge script script/Level23.exp.sol:ExploitLevel23 --broadcast --rpc-url $SEPOLIA`
+

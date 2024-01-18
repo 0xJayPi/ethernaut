@@ -35,6 +35,7 @@ Wallet Used: `Sepolia: 0x9606e11178a83C364108e99fFFD2f7F75C99d801` a.k.a. [0xJay
 - [x] 20.Denial
 - [x] 21.Shop
 - [x] 22.Dex
+- [x] 23.Dex Two
 
 ## Testing 
 - To test the code locallly: `forge test --mc ExploitLevel#`
