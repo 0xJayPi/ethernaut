@@ -500,3 +500,22 @@ This is the very same code as in challenge 22 but missing the token address chec
 Local environment: `forge test --mc ExploitLevel23` || 
 Sepolia: `forge script script/Level23.exp.sol:ExploitLevel23 --broadcast --rpc-url $SEPOLIA`
 
+## 24.Puzzle Wallet
+
+`Ethernaut Instance: 0x3F9b87959f598D0A2a398330704fa54a3A9c1A30`
+
+### Steps
+In this challenge, we need to consider that the functions from both, `PuzzleProxy` and `PuzzleWallet`, are only affecting the storage of the `PuzzleProxy`. So, we need to find a way to modify `PuzzleProxy.admin` or `PuzzleWallet.maxBalance`, both located in slot 1. Considering that only the `admin` can execute `PuzzleProxy.approveNewAdmin()`, this dosn't look like a valid attack vector. On the other hand, `PuzzleWallet.setMaxBalance()` requires us to be whitelisted and the instance to have 0 balance, which can be achieved following a series of steps.
+1. I execute  `PuzzleProxy.proposeNewAdmin()` to write on `PuzzleProxy.pendingAdmin` => slot 0, also `PuzzleWallet.owner`.
+2. Now that I'm the owner, I can call `PuzzleProxy.addToWhitelist()` to bypass the first requirement of `PuzzleProxy.setMaxBalance`.
+
+To by pass the 2nd requirement of `PuzzleWallet.setMaxBalance()`, which is `require(address(this).balance == 0)`, I need the contract to believe that my balance is equal to its total balance. I cannot directly trick `PuzzleProxy.deposit()` into updating my balance twice and `PuzzleProxy.multicall()` has locker to prevent it, `depositCalled`, so that I cannot update my balance more than once with the same `msg.value`. However, this locker can be bypassed if I call `multicall()` again nested within the same `multicall()`
+
+3. Thus, I send an array to `PuzzleProxy.multicall()` having a call to `deposit()` in `data[0]` and a nested `multicall()` calling again `deposit()` in `data[1]`.
+4. Now that the contract believes that my balance is `0.002 ether`. I can do a call to `PuzzleProxy.execute()` asking to withdraw `0.002 ether`, which is actually the `instance.balance`. At this point, `require(address(this).balance == 0)` is `true`.
+5. Lastly, I call `PuzzleProxy.setMaxBalance` to set `PuzzleWallet.maxBalance` with my address masked in uint => slot 0, also `PuzzleProxy.admin`.
+
+### Running the code
+
+Local environment: `forge test --mc ExploitLevel24` || 
+Sepolia: `forge script script/Level24.exp.sol --broadcast --rpc-url $SEPOLIA`
