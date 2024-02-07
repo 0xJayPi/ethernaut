@@ -519,3 +519,26 @@ To by pass the 2nd requirement of `PuzzleWallet.setMaxBalance()`, which is `requ
 
 Local environment: `forge test --mc ExploitLevel24` || 
 Sepolia: `forge script script/Level24.exp.sol --broadcast --rpc-url $SEPOLIA`
+
+## 25.Motorcycle
+
+`Ethernaut Instance: 0x80020A4D9f11D81c7A2B156CeF1919435Bb83CE5`
+
+### Steps
+The main issue on this instance relies on the `Engine` implementation not having the `initialize()` function blocked for direct calls. Thus, even though in the context of `Motorbike`, the function is properly intialized and blocked for future call, an attacker can directly call the function in `Engine` triggering a series of interactions that end with a delegate call to an attacker controlled contract.
+1. I need to get the address of the `Engine` implementation. For this, I can use the `vm.load` cheatcode
+```solidity
+ Engine engineContract = Engine(
+        address(
+            uint160(
+                uint256(vm.load(address(instance), 0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc))
+            )
+        )
+    );
+```
+2. Next, I create a contract with a `sefldestruct()` call.
+3. Then, by calling `engineContract.upgradeToAndCall()`, I can update the address of the implementation and do a `delegetacall()` to the function I want.
+4. Now that the `Engine` implementation was destroyed, the `Motorbike` contract is useless.
+
+Local environment: `forge test --mc ExploitLevel25` || 
+Sepolia: `forge script script/Level25.exp.sol:ExploitLevel25 --broadcast --rpc-url $SEPOLIA`
