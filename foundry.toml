@@ -3,8 +3,9 @@ src = "src"
 out = "out"
 libs = ["lib"]
 remappings = [
-    '@openzeppelin-v3/=lib/openzeppelin-contracts-v3.3.0/contracts/',
     'openzeppelin-contracts-06/=lib/openzeppelin-contracts-v3.4.0/contracts/',
+    'openzeppelin-contracts-08/=lib/openzeppelin-contracts-v4.9.0/contracts/',
+    '@openzeppelin-v3/=lib/openzeppelin-contracts-v3.3.0/contracts/',
     '@openzeppelin/=lib/openzeppelin-contracts-v4.9.0/contracts/',
 ]
 rpc_endpoints = { sepolia = "https://rpc.ankr.com/eth_sepolia" }

@@ -540,5 +540,87 @@ The main issue on this instance relies on the `Engine` implementation not having
 3. Then, by calling `engineContract.upgradeToAndCall()`, I can update the address of the implementation and do a `delegetacall()` to the function I want.
 4. Now that the `Engine` implementation was destroyed, the `Motorbike` contract is useless.
 
+### Running the code
+
 Local environment: `forge test --mc ExploitLevel25` || 
 Sepolia: `forge script script/Level25.exp.sol:ExploitLevel25 --broadcast --rpc-url $SEPOLIA`
+
+## 26.DoubleEntryPoint
+
+`Ethernaut Instance: 0x6D828583B24f3420853E05BA6f05cd9775b90049`
+
+`DoubleEntryPoint: 0x6D828583B24f3420853E05BA6f05cd9775b90049`
+`LegacyToken: 0x370DB0FdEaF37846A90918A1BA81AF77F885f750`
+`CryptoVault: 0xa427FAEF362Ebd0F4081917C58fa79Ac45f19fBF`
+
+### Steps
+First, I need to get the addresses of the contracts involved in this level using the web console. After checking the abi, I can figure out that the instance is from DoubleEntryPoint.
+```bash
+> contract.abi
+> instance
+'0x6D828583B24f3420853E05BA6f05cd9775b90049'
+> await contract.cryptoVault()
+'0xa427FAEF362Ebd0F4081917C58fa79Ac45f19fBF'
+> await contract.delegatedFrom()
+'0x370DB0FdEaF37846A90918A1BA81AF77F885f750'
+```
+Now, it's key to understand where the exploit resides within the different contracts. The only function capable of draining the vault is `sweepToken`. I can use the `LegacyToken` to bypass the `require()` in `sweepToken` and drain the `underlying` token from the vaul.
+1. To test the exploit, I created the contract `ExploitLeve26`.
+
+Let's see how the attack trace is made to understand where and how I can prevent the exploit
+- `CryptoVault.sweepToken(LGT)` - `CryptoVault` made a call to the sweepToken function with the address of the LegacyToken contract.
+- This called the function `LegacyToken.transfer(sweptTokensRecipient, CryptoVault's Token Balance)`.
+- Inside the `LegacyToken`, a call was made to `DoubleEntryPoint.delegateTransfer(sweptTokensRecipient, CryptoVault's Total Balance,  CryptoVault's Address)`.
+- Now the execution flow will reach the `delegateTransfer()` function with the address `origSender` as the address of the `CryptoVault`.
+- Based on the above observation, I can create a detection to raise an alert if the value of `origSender == CryptoVault`.
+
+Next, let's understand how `Forta` works.
+2. The function `setDetectionBot()` is setting the address of a detection bot for the `msg.sender` inside `usersDetectionBots[msg.sender]`. We'll use this to set our own bot address. 
+3. The function `notify()` is calling `handleTransaction()` function on the bot address. The `handleTransaction()` function will be implemented by us to handle the conditions for which the alerts will be raised. Note that `notify()` is being called inside the modifier `fortaNotify()`. This is how the call data is sent to the bot. 
+4. Lastly, the function `raiseAlert()` is just incrementing the number of alerts for msg.sender by 1. 
+
+Next, I have to dig how `msg.data` is organized and sent to the bot. 
+| Position |	Bytes/Length |	Variable Type |	Value |
+|---|---|---|---|
+| 0x00 | 4 | bytes4 | Function selector of handleTransaction(address,bytes) == 0x220ab6aa |
+| 0x04 | 32	| address | user address |
+| 0x24 | 32 | uint256 | Offset of msgData | 
+| 0x44 | 32 | uint256 | Length of msgData |
+| 0x64 | 4 | bytes4 | Function selector of delegateTransfer(address,uint256,address) == 0x9cd1a121 |
+| 0x68 | 32 | address | to parameter address |
+| 0x88 | 32 | uint256 | value parameter |
+| 0xA8 | 32 | address | **origSender parameter address** |
+| 0xC8 | 28 | bytes | zero-padding as per the 32-byte arguments rule of encoding |
+5. The final `msg.data` will contain the `msg.data` for the function `handleTransaction(address user, bytes calldata msgData)` and inside the second argument `bytes calldata msgData` will be our actual `msg.data` for the `delegateTransfer()` function. This is what I need to access in order to get the value of `origSender`. 
+6. The code of the `handleTransaction()` is as below:
+```solidity
+function handleTransaction(address user, bytes calldata msgData) external override {
+        address origSender;
+        assembly {
+            origSender := calldataload(0xa8)
+        }
+
+        if (origSender == cryptoVault) {
+            IForta(msg.sender).raiseAlert(user);
+        }
+    }
+```
+7. Finally, I create a deploy script for the `Bot`. Once deployed, the contract can't be drained.
+
+### Running the code
+
+Sepolia: `forge script script/Level26.exp.sol:DeployBot --rpc-url $SEPOLIA --broadcast`
+
+## 27.Good Samaritan
+
+`Ethernaut Instance: 0xA067749E8eFA200A7c952A8cdA61a7b2C0b140AA`
+
+### Steps
+The attack vector of this challenge relies in the revert that is catched by `requestDonation()`, since once trigered, it send all the balance of the wallet, `transferRemainder()`. The first does an external call to the `msg.sender` by using `INotifyable(dest_).notify(amount_)` and at this point, I can hijack the flow.
+1. I create an Attack contract with the function `function notify(uint256 amount) external`
+2. In this function, I add a revert conditioned by the `amount` received.
+
+### Running the code
+
+Local environment: `forge test --mc ExploitLevel29` || 
+Sepolia: `forge script script/Level29.exp.sol:ExploitLevel29 --broadcast --rpc-url $SEPOLIA`
