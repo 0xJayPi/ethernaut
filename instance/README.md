@@ -622,5 +622,24 @@ The attack vector of this challenge relies in the revert that is catched by `req
 
 ### Running the code
 
-Local environment: `forge test --mc ExploitLevel29` || 
-Sepolia: `forge script script/Level29.exp.sol:ExploitLevel29 --broadcast --rpc-url $SEPOLIA`
+Local environment: `forge test --mc ExploitLevel27` || 
+Sepolia: `forge script script/Level27.exp.sol:ExploitLevel27 --broadcast --rpc-url $SEPOLIA`
+
+## 28.Gatekeeper Three
+
+`Ethernaut Instance: 0x3EF70eA0fD9cc473b1845741e72Cc8F1798848da`
+
+### Steps
+I'll tackle one gate at the time.
+gateOne: 
+1. To enter this gate, I use the contract `AttackLevel`.
+gateTwo:
+2. Since no data is private on-chain, the easiest way to enter this gate is to read the password from `SimpleTrick.trick()` storage and use it to call `GatekeeperThree.getAllowance()`.
+gateThree:
+3. First, I send `ether` to the `GatekeeperThree` to pass the first condition of the `require`.
+4. Second, I use `AttackLevel` to call `GatekeeperThree.enter()` and do not create a `receive()` neither a `fallback()` function. Thus, I can pass the second condition of the `require`.
+
+### Running the code
+
+Local environment: `forge test --mc ExploitLevel28` || 
+Sepolia: `forge script script/Level28.exp.sol:ExploitLevel28 --broadcast --rpc-url $SEPOLIA`

