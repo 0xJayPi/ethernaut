@@ -41,6 +41,7 @@ Wallet Used: `Sepolia: 0x9606e11178a83C364108e99fFFD2f7F75C99d801` a.k.a. [0xJay
 - [x] 26.DoubleEntryPoint
 - [x] 27.Good Samaritan
 - [x] 28.Gatekeeper Three
+- [x] 29.Switch
 
 ## Testing 
 - To test the code locallly: `forge test --mc ExploitLevel#`
